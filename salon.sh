@@ -18,7 +18,7 @@ MAIN_MENU() {
   done
 
   read SERVICE_ID_SELECTED
-  if ! [[ ! $SERVICE_ID_SELECTED =~ ^[0-9]+$ ]]
+  if [[ ! $SERVICE_ID_SELECTED =~ ^[0-9]+$ ]]
    then
     MAIN_MENU "I could not find that service. What would you like today?"
   else
@@ -44,7 +44,7 @@ MAIN_MENU() {
         read SERVICE_TIME
         CUSTOMER_ID=$($PSQL "SELECT customer_id FROM customers WHERE phone='$CUSTOMER_PHONE'")
         INSERT_APPOINTMENTS=$($PSQL "INSERT INTO appointments(customer_id, service_id, time) VALUES ($CUSTOMER_ID, $SERVICE_ID_SELECTED, '$SERVICE_TIME')")
-        echo -e "\nI have put you down for a $SERVICE_NAME_FORMATTED atr $SERVICE_TIME, $COSTUMER_NAME_FORMATTED."
+        echo -e "\nI have put you down for a $SERVICE_NAME_FORMATTED at $SERVICE_TIME, $CUSTOMER_NAME_FORMATTED."
       else
         CUSTOMER_NAME_FORMATTED=$(echo "$CUSTOMER_NAME" | sed -E 's/\s//g')
         SERVICE_NAME=$($PSQL "SELECT name FROM services WHERE service_id = $SERVICE_ID_SELECTED")
